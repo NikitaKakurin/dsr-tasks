@@ -1,62 +1,87 @@
 import React, { Component, RefObject } from "react";
 import { fetchCrypto } from "../Api/fetchApi";
+import Coin from "./Coin";
+
 interface State {
-  cryptos: Set<string>;
+  coins: Set<string>;
+  coinsData: ICoinData;
 }
 
-interface Coin {
+interface ICoin {
   USD: number;
 }
 
-interface coinData {
-  [key: string]: Coin;
+interface ICoinData {
+  [key: string]: ICoin;
 }
 
 type Props = {};
 class App extends Component<Props, State> {
   inputSearch: RefObject<HTMLInputElement>;
-  coinsData: coinData;
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      cryptos: new Set(),
+      coins: new Set(),
+      coinsData: {},
     };
     this.inputSearch = React.createRef();
-    this.coinsData = {};
   }
-
-  componentDidUpdate() {}
 
   componentDidMount(): void {
     this.addCoin("Dogecoin");
     setInterval(() => {
-      const allCoinsRes = Array.from(this.state.cryptos).map((coin) => {
+      const allCoinsRes = Array.from(this.state.coins).map((coin) => {
         const data = fetchCrypto(coin);
         return data.then((data) => {
           if (data.Response === "Error") return;
-          return { coin, data };
+          if (data) return { coin, data };
         });
       });
       Promise.allSettled(allCoinsRes).then((res) => {
+        const coinsData: ICoinData = {};
         res.forEach((item) => {
           if (item.status !== "fulfilled") return;
           if (!item.value) return;
           const { coin, data } = item.value;
-          this.coinsData[coin] = data;
+          coinsData[coin] = data;
+        });
+        this.setState((state) => {
+          return {
+            coins: state.coins,
+            coinsData: { ...state.coinsData, ...coinsData },
+          };
         });
       });
     }, 5000);
   }
 
+  deleteCoin = (coin: string) => {
+    this.setState((state) => {
+      const newCoins = new Set(
+        Array.from(state.coins).filter((i) => i !== coin)
+      );
+      const newCoinsData = { ...state.coinsData };
+      delete newCoinsData[coin];
+      return {
+        coins: newCoins,
+        coinsData: newCoinsData,
+      };
+    });
+  };
+
   addCoin = (value: string) => {
     const coin = value.toUpperCase();
-    if (this.state.cryptos.has(coin)) return;
+    if (this.state.coins.has(coin)) return;
     const data = fetchCrypto(coin);
     data.then((data) => {
       if (data.Response === "Error") return;
-      this.coinsData[coin] = data;
+
       this.setState((state) => {
-        return { cryptos: new Set([...Array.from(state.cryptos), coin]) };
+        return {
+          coins: new Set([...Array.from(state.coins), coin]),
+          coinsData: { ...state.coinsData, ...{ [coin]: data } },
+        };
       });
     });
   };
@@ -67,17 +92,36 @@ class App extends Component<Props, State> {
   };
 
   render = () => {
-    const cryptos = Array.from(this.state.cryptos);
+    const cryptos = Array.from(this.state.coins);
+    const coinsData = this.state.coinsData;
     return (
-      <div>
-        <h1>Hometask: Class components LC methods</h1>
-        <input type="text" ref={this.inputSearch} />
-        <button onClick={this.handleClickSearch}>Search</button>
-        <div className="coinList">
-          {cryptos.map((item) => (
-            <h2 key={item}>{`${item}: ${this.coinsData[item].USD}USD`}</h2>
-          ))}
+      <div className="container">
+        <h1 className="title">Hometask: Class components LC methods</h1>
+
+        <div className="search">
+          <input type="text" className="search_input" ref={this.inputSearch} />
+          <button className="search_btn" onClick={this.handleClickSearch}>
+            Search
+          </button>
         </div>
+
+        <table>
+          <tbody>
+            <tr>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>Direction</th>
+            </tr>
+            {cryptos.map((item) => (
+              <Coin
+                key={item}
+                coin={item}
+                usd={coinsData[item].USD}
+                deleteCoin={this.deleteCoin}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   };
