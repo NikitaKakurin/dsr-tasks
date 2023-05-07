@@ -42,7 +42,10 @@ export default class Coin extends Component<Props, State> {
       <>
         <tr>
           <td>{`${coin}`}</td>
-          <td>{`${usd}USD`}</td>
+          <td>
+            <span>{`${usd}`}</span>
+            <span className="coin_usd">$USD</span>
+          </td>
           <td>
             {isIncrease !== null && (
               <img src={src} alt={direction} height={16} />
