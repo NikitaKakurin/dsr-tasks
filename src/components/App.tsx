@@ -1,130 +1,108 @@
-import React, { Component, RefObject } from "react";
-import { fetchCrypto } from "../Api/fetchApi";
+import React, { useState, useRef, useEffect } from "react";
+import { fetchApi } from "../Api/fetchApi";
 import Coin from "./Coin";
+import { ICoin, ICoinData } from "../models/typescript";
 
-interface State {
-  coins: Set<string>;
-  coinsData: ICoinData;
-}
+function App() {
+  const [coins, setCoins] = useState<Set<string>>(new Set());
+  const [coinsData, setCoinsData] = useState<ICoinData>({});
+  const inputSearch = useRef<HTMLInputElement>(null);
 
-interface ICoin {
-  USD: number;
-}
+  const deleteCoin = (coin: string) => {
+    setCoins((prevState) => {
+      const newCoins = new Set(Array.from(prevState).filter((i) => i !== coin));
+      return newCoins;
+    });
 
-interface ICoinData {
-  [key: string]: ICoin;
-}
-
-type Props = {};
-class App extends Component<Props, State> {
-  inputSearch: RefObject<HTMLInputElement>;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      coins: new Set(),
-      coinsData: {},
-    };
-    this.inputSearch = React.createRef();
-  }
-
-  componentDidMount(): void {
-    this.addCoin("Dogecoin");
-    setInterval(() => {
-      const allCoinsRes = Array.from(this.state.coins).map((coin) => {
-        const data = fetchCrypto(coin);
-        return data.then((data) => {
-          if (data.Response === "Error") return;
-          if (data) return { coin, data };
-        });
-      });
-      Promise.allSettled(allCoinsRes).then((res) => {
-        const coinsData: ICoinData = {};
-        res.forEach((item) => {
-          if (item.status !== "fulfilled") return;
-          if (!item.value) return;
-          const { coin, data } = item.value;
-          coinsData[coin] = data;
-        });
-        this.setState((state) => {
-          return {
-            coins: state.coins,
-            coinsData: { ...state.coinsData, ...coinsData },
-          };
-        });
-      });
-    }, 5000);
-  }
-
-  deleteCoin = (coin: string) => {
-    this.setState((state) => {
-      const newCoins = new Set(
-        Array.from(state.coins).filter((i) => i !== coin)
-      );
-      const newCoinsData = { ...state.coinsData };
+    setCoinsData((prevState) => {
+      const newCoinsData = { ...prevState };
       delete newCoinsData[coin];
-      return {
-        coins: newCoins,
-        coinsData: newCoinsData,
-      };
+      return newCoinsData;
     });
   };
 
-  addCoin = (value: string) => {
+  const addCoin = (value: string) => {
     const coin = value.toUpperCase();
-    if (this.state.coins.has(coin)) return;
-    const data = fetchCrypto(coin);
+    if (coins.has(coin)) return;
+    const data = fetchApi(coin);
     data.then((data) => {
-      if (data.Response === "Error") return;
+      if (!data) return;
+      const newCoinsData = data as ICoin;
+      setCoins((prevState) => new Set([...Array.from(prevState), coin]));
 
-      this.setState((state) => {
-        return {
-          coins: new Set([...Array.from(state.coins), coin]),
-          coinsData: { ...state.coinsData, ...{ [coin]: data } },
-        };
+      setCoinsData((prevState) => ({
+        ...prevState,
+        ...{ [coin]: newCoinsData },
+      }));
+    });
+  };
+
+  const updateData = () => {
+    const allCoinsRes = Array.from(coins).map((coin) => {
+      const data = fetchApi(coin);
+      return data.then((data) => {
+        if (!data) return;
+        console.log(data);
+        if (data) return { coin, data };
       });
     });
+    Promise.allSettled(allCoinsRes).then((res) => {
+      const coinsDataAll: ICoinData = {};
+      res.forEach((item) => {
+        if (item.status !== "fulfilled") return;
+        if (!item.value) return;
+        const { coin, data } = item.value;
+        coinsDataAll[coin] = data as ICoin;
+      });
+      setCoinsData((prevState) => ({ ...prevState, ...coinsDataAll }));
+    });
   };
 
-  handleClickSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const input = this.inputSearch.current as HTMLInputElement;
-    this.addCoin(input.value);
+  useEffect(() => {
+    console.error("useEffect");
+    addCoin("Dogecoin");
+    const interval = setInterval(updateData, 5000);
+    return () => {
+      console.error("useEffect RETURN");
+      clearInterval(interval);
+    };
+  }, [coins]);
+
+  const handleClickSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const input = inputSearch.current as HTMLInputElement;
+    addCoin(input.value);
   };
 
-  render = () => {
-    const cryptos = Array.from(this.state.coins);
-    const coinsData = this.state.coinsData;
-    return (
-      <div className="container">
-        <h1 className="title">Hometask: Class components LC methods</h1>
+  return (
+    <div className="container">
+      <h1 className="title">Hometask: Class components LC methods</h1>
 
-        <div className="search">
-          <input type="text" className="search_input" ref={this.inputSearch} />
-          <button className="search_btn" onClick={this.handleClickSearch}>
-            Search
-          </button>
-        </div>
-
-        <table>
-          <tbody>
-            <tr>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>Direction</th>
-            </tr>
-            {cryptos.map((item) => (
-              <Coin
-                key={item}
-                coin={item}
-                usd={coinsData[item].USD}
-                deleteCoin={this.deleteCoin}
-              />
-            ))}
-          </tbody>
-        </table>
+      <div className="search">
+        <input type="text" className="search_input" ref={inputSearch} />
+        <button className="search_btn" onClick={handleClickSearch}>
+          Search
+        </button>
       </div>
-    );
-  };
+
+      <table>
+        <tbody>
+          <tr>
+            <th>Coin</th>
+            <th>Price</th>
+            <th>Direction</th>
+          </tr>
+          {Array.from(coins).map((item) => (
+            <Coin
+              key={item}
+              coin={item}
+              usd={coinsData[item].USD}
+              deleteCoin={deleteCoin}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default App;

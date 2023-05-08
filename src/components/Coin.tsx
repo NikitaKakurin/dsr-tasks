@@ -1,63 +1,40 @@
-import React, { Component } from "react";
+import { useRef } from "react";
 import decrease from "../assets/decrease.svg";
 import increase from "../assets/increase.svg";
+import usePrevious from "../hooks/usePrevious";
 interface Props {
   coin: string;
   usd: number;
   deleteCoin: (coin: string) => void;
 }
-interface State {
-  isIncrease: boolean | null;
-}
-export default class Coin extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isIncrease: null,
-    };
+
+export default function Coin({ coin, usd, deleteCoin }: Props) {
+  let isIncrease = useRef<boolean | null>(null);
+  const prevPropsUsd = usePrevious(usd);
+  if (prevPropsUsd !== undefined && prevPropsUsd !== usd) {
+    isIncrease.current = usd > prevPropsUsd;
   }
-  componentDidUpdate(
-    prevProps: Readonly<Props>,
-    prevState: Readonly<{}>,
-    snapshot?: any
-  ): void {
-    if (this.props.usd === prevProps.usd) return;
-    if (this.props.usd > prevProps.usd) {
-      this.setState({
-        isIncrease: true,
-      });
-    }
-    if (this.props.usd < prevProps.usd) {
-      this.setState({
-        isIncrease: false,
-      });
-    }
-  }
-  render() {
-    const isIncrease = this.state.isIncrease;
-    const direction = isIncrease ? "increase" : "decrease";
-    const src = isIncrease ? increase : decrease;
-    const { coin, usd, deleteCoin } = this.props;
-    return (
-      <>
-        <tr>
-          <td>{`${coin}`}</td>
-          <td>
-            <span>{`${usd}`}</span>
-            <span className="coin_usd">$USD</span>
-          </td>
-          <td>
-            {isIncrease !== null && (
-              <img src={src} alt={direction} height={16} />
-            )}
-          </td>
-          <td>
-            <button className="delete-btn" onClick={() => deleteCoin(coin)}>
-              Delete
-            </button>
-          </td>
-        </tr>
-      </>
-    );
-  }
+  const direction = isIncrease.current ? "increase" : "decrease";
+  const src = isIncrease.current ? increase : decrease;
+  return (
+    <>
+      <tr>
+        <td>{`${coin}`}</td>
+        <td>
+          <span>{`${usd}`}</span>
+          <span className="coin_usd">$USD</span>
+        </td>
+        <td>
+          {isIncrease.current !== null && (
+            <img src={src} alt={direction} height={16} />
+          )}
+        </td>
+        <td>
+          <button className="delete-btn" onClick={() => deleteCoin(coin)}>
+            Delete
+          </button>
+        </td>
+      </tr>
+    </>
+  );
 }
