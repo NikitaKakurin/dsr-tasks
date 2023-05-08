@@ -38,6 +38,7 @@ function App() {
   };
 
   const updateData = () => {
+    console.log("updateData");
     const allCoinsRes = Array.from(coins).map((coin) => {
       const data = fetchApi(coin);
       return data.then((data) => {
@@ -59,11 +60,9 @@ function App() {
   };
 
   useEffect(() => {
-    console.error("useEffect");
     addCoin("Dogecoin");
     const interval = setInterval(updateData, 5000);
     return () => {
-      console.error("useEffect RETURN");
       clearInterval(interval);
     };
   }, [coins]);

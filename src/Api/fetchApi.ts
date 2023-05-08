@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { IResponse, IWrongResponse, ICoin } from "../models/typescript";
+import { IWrongResponse, ICoin } from "../models/typescript";
 export const fetchApi = async (cryptoName: string) => {
   try {
     const res = await fetch(
@@ -15,7 +14,7 @@ export const fetchApi = async (cryptoName: string) => {
       if (resData.Response === undefined) {
         return resData as unknown as ICoin;
       }
-      console.error(resData.Response);
+      console.error(resData.Response, `The coin ${cryptoName} is not exist`);
     }
   } catch (error) {
     console.error(error);

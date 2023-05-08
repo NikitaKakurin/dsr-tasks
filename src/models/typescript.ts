@@ -17,5 +17,3 @@ export interface IWrongResponse {
 }
 export interface RateLimit {}
 export interface Data {}
-
-export type IResponse = ICoin | IWrongResponse | null;

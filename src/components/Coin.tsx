@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import decrease from "../assets/decrease.svg";
 import increase from "../assets/increase.svg";
 import usePrevious from "../hooks/usePrevious";
@@ -8,7 +8,7 @@ interface Props {
   deleteCoin: (coin: string) => void;
 }
 
-export default function Coin({ coin, usd, deleteCoin }: Props) {
+function Coin({ coin, usd, deleteCoin }: Props) {
   let isIncrease = useRef<boolean | null>(null);
   const prevPropsUsd = usePrevious(usd);
   if (prevPropsUsd !== undefined && prevPropsUsd !== usd) {
@@ -38,3 +38,5 @@ export default function Coin({ coin, usd, deleteCoin }: Props) {
     </>
   );
 }
+
+export default memo(Coin);
