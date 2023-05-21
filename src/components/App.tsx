@@ -43,7 +43,6 @@ function App() {
       const data = fetchApi(coin);
       return data.then((data) => {
         if (!data) return;
-        console.log(data);
         if (data) return { coin, data };
       });
     });
@@ -61,6 +60,9 @@ function App() {
 
   useEffect(() => {
     addCoin("Dogecoin");
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(updateData, 5000);
     return () => {
       clearInterval(interval);
