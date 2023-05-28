@@ -1,4 +1,1 @@
-import './style/main.scss'
-
-console.log('red')
-
+import './index.ts'
