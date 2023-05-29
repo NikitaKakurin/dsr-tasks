@@ -58,6 +58,7 @@ const cssLoaders = (extra) => {
 
 const baseConfig = {
     entry: path.resolve(__dirname, './src/index.js'),
+    devtool: 'source-map',
     optimization: optimization(),
     module: {
         rules: [
