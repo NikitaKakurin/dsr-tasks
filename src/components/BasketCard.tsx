@@ -1,4 +1,4 @@
-import { ICard } from "model/typescript";
+import { IProduct } from "model/typescript";
 import "components/UI/BasketCard/basketCard.scss";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import {
@@ -8,10 +8,10 @@ import {
 } from "app/actionCreators/basketActionCreator";
 
 interface IProps {
-  data: ICard;
+  data: IProduct;
 }
 export default function BasketCard({ data }: IProps) {
-  const { img, title, price, id } = data;
+  const { image, title, price, id } = data;
 
   const { inBasket } = useAppSelector((state) => state.basketReducer);
   const dispatch = useAppDispatch();
@@ -31,7 +31,7 @@ export default function BasketCard({ data }: IProps) {
     <div className="basketCard">
       <div className="basketCard__data_container">
         <div className="basketCard__data">
-          <img src={img} alt={title} className="basketCard__img" />
+          <img src={image} alt={title} className="basketCard__img" />
           <div className="basketCard__text_container">
             <span className="basketCard__title">{title}</span>
             <span className="basketCard__price">{`${price} ₽`}</span>
@@ -68,7 +68,7 @@ export default function BasketCard({ data }: IProps) {
           </button>
         </div>
         <div className="basketCard__total_price">
-          {`${inBasket[id] * +price} ₽`}{" "}
+          {`${(inBasket[id] * +price).toFixed(2)} ₽`}{" "}
         </div>
       </div>
     </div>

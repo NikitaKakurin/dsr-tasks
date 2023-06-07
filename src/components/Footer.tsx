@@ -1,12 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import 'style/footer.scss';
+import React from "react";
+import { Link } from "react-router-dom";
+import "style/footer.scss";
 export default function Footer() {
   return (
     <footer className="footer">
       <h2>
         <Link to="/" className="footer__title">
-          QPICK
+          Task Redux
         </Link>
       </h2>
       <div className="footer__navigation">
@@ -36,10 +36,18 @@ export default function Footer() {
           <img src="./assets/svg/vk.svg" alt="vk" className="social__img" />
         </a>
         <a href="#" className="social__link">
-          <img src="./assets/svg/telegram.svg" alt="telegram" className="social__img" />
+          <img
+            src="./assets/svg/telegram.svg"
+            alt="telegram"
+            className="social__img"
+          />
         </a>
         <a href="#" className="social__link">
-          <img src="./assets/svg/whatsapp.svg" alt="whatsapp" className="social__img" />
+          <img
+            src="./assets/svg/whatsapp.svg"
+            alt="whatsapp"
+            className="social__img"
+          />
         </a>
       </div>
     </footer>

@@ -1,17 +1,19 @@
 .card{
   width: 350px;
-  height: 406px;
+  height: 530px;
   background: #FFFFFF;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   border-radius: 30px;
 
   &__img{
     height: auto;
+    max-height: 280px;
     width: 219px;
+
   }
 
   &__img_container{
-    height: 306px;
+    height: 400px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -85,14 +87,15 @@
   }
 
   &__price_wrapper{
+    min-width: 75px;
     display: flex;
     flex-direction: column;
     color:#FFA542;
-    align-items: center;
+    align-items: flex-end;
     font-family: Montserrat;
     font-weight: 600;
     letter-spacing: 0em;
-    text-align: left;
+    text-align: right;
     height: 37px;
   }
 

@@ -11,7 +11,7 @@ export default function Header() {
     <header className="header">
       <h1>
         <Link to="/" className="header__title">
-          QPICK
+          Task Redux
         </Link>
       </h1>
       <div className="header__icons_container">

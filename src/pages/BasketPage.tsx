@@ -1,15 +1,14 @@
 import BasketCard from "components/BasketCard";
-import { cardsData } from "data/cardsData";
 import "style/basketPage.scss";
-import { ICard, IInBasket } from "model/typescript";
+import { IInBasket, IProduct } from "model/typescript";
 import { useAppSelector } from "app/hooks";
 
-const getCardsInBasket = (inBasket: IInBasket, data: ICard[]) => {
+const getCardsInBasket = (inBasket: IInBasket, data: IProduct[]) => {
   const idArr = Object.keys(inBasket);
-  return data.filter((card) => idArr.includes(card.id));
+  return data.filter((card) => idArr.includes(`${card.id}`));
 };
 
-const getTotalPrice = (cards: ICard[], inBasket: IInBasket) => {
+const getTotalPrice = (cards: IProduct[], inBasket: IInBasket) => {
   let sum = 0;
   cards.forEach((card) => (sum += +card.price * inBasket[card.id]));
   return sum;
@@ -17,7 +16,8 @@ const getTotalPrice = (cards: ICard[], inBasket: IInBasket) => {
 
 export default function BasketPage() {
   const { inBasket } = useAppSelector((state) => state.basketReducer);
-  const cardsInBasket = getCardsInBasket(inBasket, cardsData);
+  const { products } = useAppSelector((state) => state.productReducer);
+  const cardsInBasket = getCardsInBasket(inBasket, products);
   const totalPrice = getTotalPrice(cardsInBasket, inBasket);
   return (
     <div className="basketPage">
@@ -31,7 +31,7 @@ export default function BasketPage() {
         <div className="aside">
           <div className="aside__text_container">
             <div>ИТОГО</div>
-            <div>{`₽ ${totalPrice}`}</div>
+            <div>{`₽ ${totalPrice.toFixed(2)}`}</div>
           </div>
           <button className="aside__btn">Перейти к офрмлению</button>
         </div>

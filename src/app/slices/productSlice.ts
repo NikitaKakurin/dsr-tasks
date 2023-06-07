@@ -3,7 +3,7 @@ import { IProduct } from "model/typescript";
 
 const initProducts: IProduct[] = [];
 const initialState = {
-  produsts: initProducts,
+  products: initProducts,
 };
 
 export const productSlice = createSlice({
@@ -11,9 +11,10 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     setProducts(state, { payload }: PayloadAction<IProduct[]>) {
-      state.produsts = payload;
+      state.products = payload;
     },
   },
 });
 
+export const { setProducts } = productSlice.actions;
 export default productSlice.reducer;

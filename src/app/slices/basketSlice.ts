@@ -5,7 +5,7 @@ const initBasket: IInBasket = {};
 const initialState = {
   inBasket: initBasket,
 };
-type PayloadAdd = string;
+type PayloadAdd = number;
 
 export const basketSlice = createSlice({
   name: "Basket",
