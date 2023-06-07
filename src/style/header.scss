@@ -1,0 +1,36 @@
+.header{
+  height: 60px;
+  max-width:1110px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  &__icons_container{
+    height: 100%;
+    width: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title{
+    text-decoration: none;
+    color: #101010;
+    font-family: Montserrat;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+
+    cursor: pointer;
+    transition: color .3s;
+
+    &:hover{
+      color:#e88b21;
+    }
+  }
+}

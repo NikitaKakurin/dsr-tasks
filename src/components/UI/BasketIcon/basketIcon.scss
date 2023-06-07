@@ -1,0 +1,38 @@
+.basketIcon{
+  &__container{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__count{
+    position: absolute;
+    top: 13px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 100%;
+    background: #FFA542;
+    font-family: Montserrat;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: center;
+  }
+
+  &__img{
+    width: 23px;
+    height: 23px;
+    cursor: pointer;
+    transition: transform .3s;
+
+    &:hover{
+      transform: scale(1.2);
+    }
+  }
+
+}

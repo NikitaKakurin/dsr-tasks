@@ -1,0 +1,74 @@
+.basketPage{
+  max-width: 1100px;
+  width: 100%;
+  min-height: calc(100vh - 300px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+
+  &__container{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__title{
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+
+  &__cards{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .aside{
+    width: 350px;
+    height: 120px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    padding-top: 21px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    
+
+    &__text_container{
+      margin-left: auto;
+      margin-right: auto;
+      width: 311px;
+      height: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: Montserrat;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 18px;
+      letter-spacing: 0em;
+      text-align: left;
+    }
+
+    &__btn{
+      padding: 22px 0;
+      width: 100%;
+      background: #101010;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+      font-family: Montserrat;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 21px;
+      letter-spacing: 0em;
+      text-align: center;
+      color:#FFFFFF;
+      cursor: pointer;
+    }
+  }
+}

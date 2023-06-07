@@ -7,6 +7,7 @@ export const logger: Middleware =
     if (!action.type) {
       return next(action);
     }
+    console.log("---------------------------------");
     console.log("type", action.type);
     console.log("payload", action.payload);
     console.log("current_state", getState());
