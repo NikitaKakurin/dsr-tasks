@@ -1,10 +1,13 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import registrationReducer from "./slices/registrationSlice";
+import thumbReducer from "./slices/thumbSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    auth: registrationReducer,
+    thumb: thumbReducer,
   },
+  devTools: true,
 });
 
 export type AppDispatch = typeof store.dispatch;
