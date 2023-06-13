@@ -16,7 +16,8 @@ export default function FormCard() {
     dispatch(nextForm());
   };
   return (
-    <form onSubmit={goToNext}>
+    <form className="form" onSubmit={goToNext}>
+      <h4>Card number:</h4>
       <InputCard isRequired={true} setIsValid={setIsValid} name="cardNumber" />
       <button className="button-next" disabled={!isValid}>
         Next

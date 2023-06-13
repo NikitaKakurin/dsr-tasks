@@ -20,8 +20,8 @@ export default function FormResult() {
   } = useAppSelector((state) => state.auth);
 
   return (
-    <div className="form-auth" id="formAuth">
-      <h4>Result</h4>
+    <div className="form" id="formAuth">
+      <h4>Result:</h4>
       <div className="input__container">
         <label className="input__label">
           <span className="input__label_text">Your login:</span>
@@ -34,7 +34,7 @@ export default function FormResult() {
           <input type="text" className="" value={password} disabled />
         </label>
       </div>
-      <label className="">
+      <label className="select">
         <span>Your subscribe plan</span>
         <select value={subscribe}>
           <option value="">--Please choose an option--</option>
@@ -75,8 +75,8 @@ export default function FormResult() {
           <input type="text" className="" value={email} disabled />
         </label>
       </div>
-      <label className="">
-        <span>Your gender</span>
+      <label className="select">
+        <span>Your gender:</span>
         <select value={gender}>
           <option value="">--Please choose your gender--</option>
           {optionsGender.map((data) => (

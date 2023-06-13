@@ -1,10 +1,27 @@
-.form-auth {
+.form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 10px;
 }
+
+.App{
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.select{
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.cardType{
+  margin-top: 10px;
+}
+
 
 .input__container{
   display: flex;
@@ -33,6 +50,7 @@
 
 h4{
   margin: 0;
+  padding-bottom: 10px;
 }
  .errorText{
   display: inline-block;

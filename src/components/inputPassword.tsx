@@ -82,7 +82,7 @@ export default function InputPassword({
         <span className="input__label_text">Please enter your password</span>
         <input
           ref={inputPass}
-          type="text"
+          type="password"
           className={classes}
           placeholder="Password"
           required
@@ -96,7 +96,7 @@ export default function InputPassword({
         <span className="input__label_text">Please repeat password</span>
         <input
           ref={inputRepeatPass}
-          type="text"
+          type="password"
           className={classes}
           placeholder="Repeat password"
           required

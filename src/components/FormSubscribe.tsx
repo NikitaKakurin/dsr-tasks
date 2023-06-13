@@ -32,13 +32,13 @@ export default function FormSubscribe() {
   };
 
   return (
-    <form className="form-subscribe" onSubmit={goToNext}>
-      <h4>Subscription</h4>
+    <form className="form" onSubmit={goToNext}>
+      <h4>Subscription:</h4>
       <InputSelect
         name="subscribe"
         isRequired={true}
-        labelText="Choose a subscription"
-        classes=""
+        labelText="Choose a subscription:"
+        classes="select"
         optionsData={optionsSubscribe}
         setIsValid={setIsValid}
       />

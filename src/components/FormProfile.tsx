@@ -65,8 +65,8 @@ export default function FormProfile() {
   }, [isValidFirstName, isValidSecondName, isValidEmail, isValidGender, is18]);
 
   return (
-    <form className="form-auth" onSubmit={goToNext}>
-      <h4>Registration</h4>
+    <form className="form" onSubmit={goToNext}>
+      <h4>Profile data:</h4>
       <InputText
         name="firstName"
         isRequired={true}
@@ -115,7 +115,7 @@ export default function FormProfile() {
         name="gender"
         isRequired={true}
         labelText="Choose your gender:"
-        classes=""
+        classes="select"
         optionsData={optionsGender}
         setIsValid={setIsValidGender}
       />

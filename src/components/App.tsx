@@ -5,10 +5,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>dsr-form</h1>
+        <h1>DSR-form</h1>
       </header>
       <Form />
-
     </div>
   );
 }

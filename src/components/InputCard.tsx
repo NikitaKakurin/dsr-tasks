@@ -99,7 +99,9 @@ export default function InputCard({ isRequired, setIsValid, name }: IProps) {
   return (
     <div className="input__container">
       <label className="input__label">
-        <span className="input__label_text">Please enter your card number</span>
+        <span className="input__label_text">
+          Please enter your card number:
+        </span>
         <input
           name={name}
           value={value}
@@ -108,10 +110,8 @@ export default function InputCard({ isRequired, setIsValid, name }: IProps) {
           required={isRequired}
           onChange={checkNumber}
         />
-        <p>
-          <span>Card type is: {typeCard}</span>
-        </p>
         <span className="errorText">{textError}</span>
+        <span className="cardType">Card type is: {typeCard}</span>
       </label>
     </div>
   );

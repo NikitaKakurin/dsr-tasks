@@ -24,8 +24,8 @@ export default function FormConfirm() {
   }, [isPersonalData, isCookie]);
 
   return (
-    <form className="form-auth" id="formAuth" onSubmit={goToNext}>
-      <h4>Confirm</h4>
+    <form className="form" onSubmit={goToNext}>
+      <h4>Confirm:</h4>
       <div className="input__container">
         <label className="input__label">
           <span className="input__label_text">Your Login:</span>

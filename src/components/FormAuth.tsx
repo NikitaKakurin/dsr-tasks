@@ -17,29 +17,29 @@ export default function FormAuth() {
     const login = (data.get("login") as string) || "";
     const password = (data.get("password") as string) || "";
     dispatch(setAuthData({ login, password }));
-    dispatch(nextForm())
+    dispatch(nextForm());
   };
   useEffect(() => {
     setIsValid(isValidLogin && isValidPassword);
   }, [isValidLogin, isValidPassword]);
 
   return (
-    <form className="form-auth" id="formAuth" onSubmit={goToNext}>
-      <h4>Registration</h4>
+    <form className="form" onSubmit={goToNext}>
+      <h4>Registration:</h4>
       <InputText
         name="login"
         isRequired={true}
         placeholder="Login"
         labelText="Please input your login"
         pattern="^[a-z]+$"
-        errorText="Login must be entered in lowercase"
+        errorText="Login must be entered in lowercase (only letters)"
         classes="Form__input"
         setIsValid={setIsValidLogin}
       />
       <InputPassword
         name="password"
         pattern="(?=.*\d)(?=.*[a-zA-Z]).*"
-        errorText="password must contain at least one letter and one number"
+        errorText="Password must contain at least one letter and one number"
         classes="Form__input"
         minLength={6}
         setIsValid={setIsValidPassword}
