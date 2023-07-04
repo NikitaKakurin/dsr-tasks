@@ -1,4 +1,27 @@
+body{
+  margin: 0;
+  padding: 0;
+}
+
+.app{
+  width: 100vw;
+  height: 100vh;
+}
 .form-auth{
   display: flex;
   flex-direction: column;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+.error-message{
+  color:red;
+}
+
+.app-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+

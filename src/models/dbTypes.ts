@@ -1,4 +1,4 @@
-import { Role } from "constants/role";
+import { ROLE } from "constants/role";
 
 export interface IAuthReq {
   login: string;
@@ -7,7 +7,7 @@ export interface IAuthReq {
 
 export interface IAuthState {
   name: string;
-  role: Role[keyof Role];
+  role: ROLE[keyof ROLE];
   code: number;
   errorMessage: string;
   isError: boolean;

@@ -34,7 +34,6 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state: IAuthState, { payload }: PayloadAction<TUser>) => {
-      debugger;
       state.role = payload.role;
       state.name = payload.name;
       state.code = 200;
@@ -45,7 +44,6 @@ export const authSlice = createSlice({
       state: IAuthState,
       { payload }: PayloadAction<ILoginError>
     ) => {
-      debugger;
       state.role = "";
       state.name = "";
       state.code = payload.code;
