@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { TUser, IAuthReq, IAuthState } from "models/dbTypes";
+import { TUser, IAuthReq, IAuthState, TResError } from "models/dbTypes";
 import { fetchLogin } from "api/api";
 import { store } from "../store";
+import axios, { AxiosError } from "axios";
+import { error } from "console";
 
 const initialState: IAuthState = {
   name: "",
@@ -10,6 +12,7 @@ const initialState: IAuthState = {
   code: 200,
   errorMessage: "",
   isError: false,
+  isLoading: false,
 };
 
 interface ILoginError {
@@ -17,15 +20,30 @@ interface ILoginError {
   message: string;
 }
 
+interface ILoginSuccessPayload {
+  data: TUser;
+}
+interface ILoginErrorPayload {
+  data: ILoginError;
+}
+
 export const loginAsync = createAsyncThunk(
   "auth/loginAsync",
-  async ({ login, password }: IAuthReq) => {
-    const response = await fetchLogin({ login, password });
-    if (response.status >= 200 && response.status < 300) {
-      store.dispatch(authSlice.actions.loginSuccess(response.data as TUser));
-      return;
-    }
-    store.dispatch(authSlice.actions.loginError(response.data as ILoginError));
+  async ({ login, password }: IAuthReq, { rejectWithValue }) => {
+    return await axios
+      .post<TUser>(
+        `http://localhost:3000/api/v1/login`,
+        { login: login, password: password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .catch((_err) => {
+        const error = _err as AxiosError;
+        return rejectWithValue({ data: error.response?.data });
+      });
   }
 );
 
@@ -33,47 +51,44 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loginSuccess: (state: IAuthState, { payload }: PayloadAction<TUser>) => {
-      state.role = payload.role;
-      state.name = payload.name;
-      state.code = 200;
-      state.errorMessage = "";
-      state.isError = false;
-    },
-    loginError: (
-      state: IAuthState,
-      { payload }: PayloadAction<ILoginError>
-    ) => {
-      state.role = "";
-      state.name = "";
-      state.code = payload.code;
-      state.errorMessage = payload.message;
-      state.isError = true;
-    },
     logout: (state: IAuthState) => {
       state.role = "";
       state.name = "";
       state.code = 200;
       state.errorMessage = "";
       state.isError = false;
+      state.isLoading = false;
     },
   },
   extraReducers: (builder) => {
-    // builder
-    // .addCase(loginAsync.pending, (state, action) => {
-    //   debugger;
-    // })
+    builder
+      .addCase(loginAsync.pending, (state) => {
+        state.isError = false;
+        state.isLoading = true;
+      })
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        const payload = action.payload.data as TUser;
+        state.role = payload.role;
+        state.name = payload.name;
+        state.code = 200;
+        state.errorMessage = "";
+        state.isError = false;
+        state.isLoading = false;
+      })
+      .addCase(loginAsync.rejected, (state, action) => {
+        const payload = (action.payload as ILoginErrorPayload).data;
+        state.role = "";
+        state.name = "";
+        state.code = payload.code;
+        state.errorMessage = payload.message;
+        state.isError = true;
+        state.isLoading = false;
+      });
   },
 });
 
-// export const { loginAsync } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectAuth = (state: RootState) => state.authReducer;
-
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
 
 export default authSlice.reducer;

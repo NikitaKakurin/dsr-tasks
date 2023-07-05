@@ -11,6 +11,7 @@ export interface IAuthState {
   code: number;
   errorMessage: string;
   isError: boolean;
+  isLoading: boolean;
 }
 
 export interface ITodo {
