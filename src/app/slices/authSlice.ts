@@ -21,18 +21,9 @@ interface ILoginError {
   message: string;
 }
 
-interface ILoginSuccessPayload {
-  data: TUser;
-}
 interface ILoginErrorPayload {
   data: ILoginError;
 }
-
-// export const logout = () => {
-//   return (dispatch: AppDispatch) => {
-//     dispatch(authSlice.actions.logout());
-//   };
-// };
 
 export const loginAsync = createAsyncThunk(
   "auth/loginAsync",
@@ -55,7 +46,6 @@ export const loginAsync = createAsyncThunk(
             data: { code: 500, message: "Internal Server Error" },
           });
         }
-
         return rejectWithValue({ data: error.response?.data });
       });
   }
