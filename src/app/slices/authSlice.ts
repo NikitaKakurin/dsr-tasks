@@ -1,11 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { TUser, IAuthReq, IAuthState, TResError } from "models/dbTypes";
-import { fetchLogin } from "api/api";
-import { AppDispatch } from "../store";
-import axios, { AxiosError } from "axios";
-import { error } from "console";
-import internal from "stream";
+import { TUser, IAuthReq, IAuthState } from "models/dbTypes";
+import { AxiosError } from "axios";
+import { api } from "api/api";
 
 const initialState: IAuthState = {
   name: "",
@@ -28,22 +25,24 @@ interface ILoginErrorPayload {
 export const loginAsync = createAsyncThunk(
   "auth/loginAsync",
   async ({ login, password }: IAuthReq, { rejectWithValue }) => {
-    return await axios
-      .post<TUser>(
-        `http://localhost:3000/api/v1/login`,
-        { login, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return await api
+      .post<TUser>(`login`, { login, password })
       .then((response) => response.data)
       .catch((_err) => {
         const error = _err as AxiosError;
-        if (error.response?.status === 500) {
+        if (error.response?.status && error.response.status >= 500) {
           return rejectWithValue({
-            data: { code: 500, message: "Internal Server Error" },
+            data: {
+              code: error.response.status,
+              message: error.message,
+            },
+          });
+        } else if (!error.response && error.request) {
+          return rejectWithValue({
+            data: {
+              code: error.code,
+              message: error.message,
+            },
           });
         }
         return rejectWithValue({ data: error.response?.data });
