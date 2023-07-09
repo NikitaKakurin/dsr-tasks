@@ -6,20 +6,5 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
-
-// export const fetchLogin = async ({ login, password }: IAuthReq) => {
-//   return await axios
-//     .post<TUser | TResError>(
-//       `http://localhost:3000/api/v1/login`,
-//       { login: login, password: password },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     )
-//     .catch((error) => {
-//       return error.response;
-//     });
-// };

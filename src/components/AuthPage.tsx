@@ -1,20 +1,14 @@
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { loginAsync } from "app/slices/authSlice";
-import React, { useEffect } from "react";
-
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATHS } from "constants/routePaths";
+import { loginAsync, selectAuth } from "app/slices/authSlice";
+import React from "react";
 
 export default function AuthPage() {
   const dispatch = useAppDispatch();
-  const { role, errorMessage, isError, isLoading } = useAppSelector(
-    (state) => state.authReducer
-  );
-
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (role) navigate(ROUTE_PATHS.main);
-  }, [navigate, role]);
+  const {
+    message: errorMessage,
+    isError,
+    isLoading,
+  } = useAppSelector(selectAuth);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
