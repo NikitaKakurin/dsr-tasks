@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { useEffect } from "react";
 import ProtectedRoute from "./ProtectedRoute";
 import { ROLE } from "constants/role";
+import Modal from "./Modal";
 
 function App() {
   const { role } = useAppSelector((state) => state.authReducer);
@@ -70,6 +71,7 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
+      <Modal/>
     </div>
   );
 }
