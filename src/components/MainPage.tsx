@@ -1,23 +1,32 @@
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectAuth } from "app/slices/authSlice";
-import { getTodosAsync, selectTodos } from "app/slices/todosSlice";
+import {
+  createTodoAsync,
+  getTodosAsync,
+  selectTodos,
+} from "app/slices/todosSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TodoCard from "./TodoCard";
+import { showModal } from "app/slices/modalSlice";
 
 export default function MainPage() {
   const { role } = useAppSelector(selectAuth);
   const { isError, message, isLoading, data } = useAppSelector(selectTodos);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+
+  const addTodo = () => {
+    dispatch(showModal({ title: "", description: "", id: 0, type: "create" }));
+  };
   // if not authorized redirect to login page
   useEffect(() => {
     dispatch(getTodosAsync());
-  }, [dispatch, navigate, role]);
+  }, [dispatch, role]);
 
   return (
     <>
       <div>MAINPage</div>
+      <button onClick={addTodo}>Create</button>
       <p>{isLoading && "Loading..."}</p>
       <div>
         <p>{isError && message}</p>

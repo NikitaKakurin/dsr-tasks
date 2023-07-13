@@ -15,6 +15,8 @@ const initialState = {
 
 type IEditTodoAsyncProps = Pick<ITodo, "id" | "title" | "description">;
 
+type ICreateTodoAsyncProps = Pick<ITodo, "title" | "description">;
+
 export type TTodosState = typeof initialState;
 
 interface ITodoError {
@@ -66,6 +68,41 @@ export const editTodoAsync = createAsyncThunk(
         console.log("response: ", response);
         store.dispatch(hideModal());
         return { id, title, description };
+      })
+      .catch((_err) => {
+        const error = _err as AxiosError;
+        if (error.response) {
+          return rejectWithValue({
+            data: {
+              code: error.response.status,
+              message: error.message,
+            },
+          });
+        } else if (!error.response && error.request) {
+          return rejectWithValue({
+            data: {
+              code: error.code,
+              message: error.message,
+            },
+          });
+        }
+        return rejectWithValue({ data: error.response });
+      });
+  }
+);
+
+export const createTodoAsync = createAsyncThunk(
+  "todos/createTodoAsync",
+  async (
+    { title, description }: ICreateTodoAsyncProps,
+    { rejectWithValue }
+  ) => {
+    return await api
+      .post(`todos`, { title, description })
+      .then((response) => {
+        console.log("response: ", response);
+        store.dispatch(hideModal());
+        return response.data;
       })
       .catch((_err) => {
         const error = _err as AxiosError;
@@ -144,6 +181,7 @@ export const todosSlice = createSlice({
         state.code = payload.code;
         state.message = payload.message;
       })
+
       // editTodoAsync
       .addCase(editTodoAsync.pending, (state) => {
         state.isLoading = true;
@@ -166,6 +204,26 @@ export const todosSlice = createSlice({
         state.code = payload.code;
         state.message = payload.message;
       })
+
+      // createTodoAsync
+      .addCase(createTodoAsync.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(createTodoAsync.fulfilled, (state, action) => {
+        const { id, description, title, createdBy } = action.payload;
+        state.isLoading = false;
+        state.isError = false;
+        state.data.push(action.payload);
+      })
+      .addCase(createTodoAsync.rejected, (state, action) => {
+        const payload = (action.payload as ILoginErrorPayload).data;
+        state.isLoading = false;
+        state.isError = true;
+        state.code = payload.code;
+        state.message = payload.message;
+      })
+
       // deleteTodoAsync
       .addCase(deleteTodoAsync.pending, (state) => {
         state.isLoading = true;

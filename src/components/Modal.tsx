@@ -1,6 +1,10 @@
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { hideModal, selectModal } from "app/slices/modalSlice";
-import { deleteTodoAsync, editTodoAsync } from "app/slices/todosSlice";
+import {
+  createTodoAsync,
+  deleteTodoAsync,
+  editTodoAsync,
+} from "app/slices/todosSlice";
 import { MODAL_TYPE } from "constants/modalType";
 import React, { useEffect, useState } from "react";
 
@@ -37,6 +41,14 @@ export default function Modal() {
         editTodoAsync({ id, description: inputDescription, title: inputTitle })
       );
     }
+    if (type === MODAL_TYPE.create) {
+      dispatch(
+        createTodoAsync({
+          description: inputDescription,
+          title: inputTitle,
+        })
+      );
+    }
   };
   const handleCancel = () => {
     dispatch(hideModal());
@@ -49,9 +61,9 @@ export default function Modal() {
             <h3>{modalTitle}</h3>
             {(type === MODAL_TYPE.edit || type === MODAL_TYPE.create) && (
               <>
-                <label htmlFor="modal__edit">title</label>
+                <label htmlFor="modal__title">title</label>
                 <input
-                  id="modal__edit"
+                  id="modal__title"
                   value={inputTitle}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setInputTitle(e.target.value)
