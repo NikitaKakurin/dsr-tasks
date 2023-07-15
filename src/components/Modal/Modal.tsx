@@ -59,32 +59,35 @@ export default function Modal() {
       {isShowModal && (
         <div className="modal-container">
           <div className="modal">
-            <h3>{modalTitle}</h3>
+            <h3 className="moda__action_title">{modalTitle}</h3>
             {(type === MODAL_TYPE.edit || type === MODAL_TYPE.create) && (
               <>
-                <label htmlFor="modal__title">title</label>
+                <label htmlFor="modal__title">Title</label>
                 <input
                   id="modal__title"
                   value={inputTitle}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setInputTitle(e.target.value)
                   }
+                  maxLength={25}
                 ></input>
-                <label htmlFor="modal__description">description</label>
-                <input
+                <label htmlFor="modal__description">Description:</label>
+                <textarea
                   id="modal__description"
                   value={inputDescription}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setInputDescription(e.target.value)
                   }
-                ></input>
+                  rows={5}
+                  maxLength={100}
+                ></textarea>
               </>
             )}
             <div className="modal__container-btn">
-              <button className="btn btn-apply" onClick={send}>
+              <button className="btn btn-apply btn-green" onClick={send}>
                 Apply
               </button>
-              <button className="btn btn-cancel" onClick={handleCancel}>
+              <button className="btn btn-cancel btn-red" onClick={handleCancel}>
                 Cancel
               </button>
             </div>

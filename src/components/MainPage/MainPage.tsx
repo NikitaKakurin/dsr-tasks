@@ -21,10 +21,14 @@ export default function MainPage() {
 
   return (
     <>
-      <div>MAINPage</div>
-      <button onClick={addTodo}>Create</button>
+      <div className="mainPage-title_wrapper">
+        <h2 className="page-name">Main page</h2>
+        <button className="btn" onClick={addTodo}>
+          Create
+        </button>
+      </div>
       <p>{isLoading && "Loading..."}</p>
-      <div>
+      <div className="main-todos_container">
         <p>{isError && message}</p>
         {!isError && data.map((todo) => <TodoCard {...todo} key={todo.id} />)}
       </div>

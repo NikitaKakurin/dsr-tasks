@@ -1,4 +1,4 @@
-import './TodoCard.css';
+import "./TodoCard.css";
 import { useAppSelector, useAppDispatch } from "app/hooks";
 import { ITodo } from "../../models/dbTypes";
 import { selectAuth } from "app/slices/authSlice";
@@ -18,16 +18,18 @@ export default function TodoCard({ title, description, id, createdBy }: ITodo) {
     dispatch(showModal({ title, description, id, type: "delete" }));
   };
   return (
-    <div key={id}>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <p>{createdBy}</p>
-      <button type="button" onClick={editTodo}>
-        Edit
-      </button>
-      <button type="button" onClick={deleteTodo}>
-        Delete
-      </button>
+    <div key={id} className="todo">
+      <h3 className="todo__title">{title}</h3>
+      <p className="todo__description">{description}</p>
+      <p className="todo__createdBy"> Author: {createdBy}</p>
+      <div className="todo__btn_container">
+        <button type="button" className="btn btn-orange" onClick={editTodo}>
+          Edit
+        </button>
+        <button type="button" className="btn btn-red" onClick={deleteTodo}>
+          Delete
+        </button>
+      </div>
     </div>
   );
 }

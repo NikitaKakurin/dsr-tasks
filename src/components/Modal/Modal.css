@@ -11,7 +11,7 @@
 }
 
 .modal {
-  background-color: bisque;
+  background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
   width: 400px;
@@ -25,4 +25,17 @@
   align-items: center;
   justify-content: center;
   gap: 30px;
+}
+
+.moda__action_title {
+  text-align: center;
+}
+
+.modal__description {
+  resize: none;
+  border-radius: 20px;
+}
+
+.modal__title {
+  border-radius: 10px;
 }

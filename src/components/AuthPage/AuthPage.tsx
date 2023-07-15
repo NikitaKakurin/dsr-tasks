@@ -21,19 +21,29 @@ export default function AuthPage() {
   return (
     <>
       {isLoading && <p>Loading...</p>}
-      <h2>AuthPage</h2>
+      <h2 className="page-name">AuthPage</h2>
       <form className="form-auth" id="form-auth" onSubmit={handleSubmit}>
-        {isError && <p className="error-message">{errorMessage}</p>}
-        <label htmlFor="form-auth__login">Please enter your login</label>
-        <input type="text" name="login" id="form-auth__login" required />
-        <label htmlFor="form-auth__password">Please enter your password</label>
-        <input
-          type="password"
-          name="password"
-          id="form-auth__password"
-          required
-        />
-        <button type="submit">send</button>
+        {isError && <div className={`error-message`}>{errorMessage}</div>}
+        <h3 className="form-auth__title">Authorization</h3>
+        <div>
+          <label htmlFor="form-auth__login">Please enter your login</label>
+          <input type="text" name="login" id="form-auth__login" required />
+        </div>
+        <div>
+          <label htmlFor="form-auth__password">
+            Please enter your password
+          </label>
+          <input
+            type="password"
+            name="password"
+            id="form-auth__password"
+            required
+          />
+        </div>
+
+        <button className="btn" type="submit">
+          send
+        </button>
       </form>
     </>
   );

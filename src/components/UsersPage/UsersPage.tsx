@@ -8,17 +8,20 @@ export default function UsersPage() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getUsersAsync());
-  });
+  }, []);
   return (
     <>
-      <div>UsersPage</div>
-      <div>
-        {users.map((user) => {
+      <h2 className="page-name">Users page</h2>
+      <div className="users">
+        {users.map((user, index) => {
           return (
-            <>
-              <p>{user.name}</p>
-              <p>{user.role}</p>
-            </>
+            <div className="user-card" key={user.name}>
+              <div className="user-number">{index + 1}</div>
+              <div className="user-info">
+                <div>Name: {user.name}</div>
+                <div>Role: {user.role}</div>
+              </div>
+            </div>
           );
         })}
       </div>
