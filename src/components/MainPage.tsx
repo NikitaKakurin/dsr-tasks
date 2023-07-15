@@ -1,12 +1,7 @@
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectAuth } from "app/slices/authSlice";
-import {
-  createTodoAsync,
-  getTodosAsync,
-  selectTodos,
-} from "app/slices/todosSlice";
+import { getTodosAsync, selectTodos } from "app/slices/todosSlice";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import TodoCard from "./TodoCard";
 import { showModal } from "app/slices/modalSlice";
 

@@ -7,7 +7,7 @@ export interface IAuthReq {
 
 export interface IAuthState {
   name: string;
-  role: ROLE[keyof ROLE];
+  role: string;
   code: number | string;
   errorMessage: string;
   isError: boolean;
