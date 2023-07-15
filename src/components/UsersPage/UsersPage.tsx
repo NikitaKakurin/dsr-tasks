@@ -1,3 +1,4 @@
+import "./UsersPage.css";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { getUsersAsync, selectUsers } from "app/slices/usersSlice";
 import React, { useEffect } from "react";

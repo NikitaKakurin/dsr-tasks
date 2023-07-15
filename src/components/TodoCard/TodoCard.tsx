@@ -1,5 +1,6 @@
+import './TodoCard.css';
 import { useAppSelector, useAppDispatch } from "app/hooks";
-import { ITodo } from "../models/dbTypes";
+import { ITodo } from "../../models/dbTypes";
 import { selectAuth } from "app/slices/authSlice";
 import { ROLE } from "constants/role";
 import { showModal } from "app/slices/modalSlice";

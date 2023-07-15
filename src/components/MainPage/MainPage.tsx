@@ -1,8 +1,9 @@
+import "./MainPage.css";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectAuth } from "app/slices/authSlice";
 import { getTodosAsync, selectTodos } from "app/slices/todosSlice";
 import { useEffect } from "react";
-import TodoCard from "./TodoCard";
+import TodoCard from "../TodoCard/TodoCard";
 import { showModal } from "app/slices/modalSlice";
 
 export default function MainPage() {

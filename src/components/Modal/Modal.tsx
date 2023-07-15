@@ -1,3 +1,4 @@
+import "./Modal.css";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { hideModal, selectModal } from "app/slices/modalSlice";
 import {

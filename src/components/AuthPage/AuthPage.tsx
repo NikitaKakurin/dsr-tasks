@@ -1,3 +1,4 @@
+import "./AuthPage.css";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { loginAsync, selectAuth } from "app/slices/authSlice";
 import React from "react";
