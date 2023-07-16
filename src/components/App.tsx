@@ -14,6 +14,7 @@ import Header from "./Header/Header";
 import Spinner from "./Spinner/Spinner";
 import { selectTodos } from "app/slices/todosSlice";
 import { selectUsers } from "app/slices/usersSlice";
+import Page404 from "./Page404/Page404";
 
 function App() {
   const { role, isLoading: isLoadingAuth } = useAppSelector(selectAuth);
@@ -78,6 +79,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<Page404 />}></Route>
       </Routes>
       <Modal isError={isErrorTodos} errorMessage={errorMessageTodos} />
     </div>
