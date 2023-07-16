@@ -4,16 +4,28 @@ import MainPage from "./MainPage/MainPage";
 import ProfilePage from "./ProfilePage/ProfilePage";
 import UsersPage from "./UsersPage/UsersPage";
 import { ROUTE_PATHS } from "constants/routePaths";
-import { getMeAsync } from "app/slices/authSlice";
+import { getMeAsync, selectAuth } from "app/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import { ROLE } from "constants/role";
 import Modal from "./Modal/Modal";
 import Header from "./Header/Header";
+import Spinner from "./Spinner/Spinner";
+import { selectTodos } from "app/slices/todosSlice";
+import { selectUsers } from "app/slices/usersSlice";
 
 function App() {
-  const { role } = useAppSelector((state) => state.authReducer);
+  const { role, isLoading: isLoadingAuth } = useAppSelector(selectAuth);
+  const { isLoading: isLoadingTodos } = useAppSelector(selectTodos);
+  const { isLoading: isLoadingUsers } = useAppSelector(selectUsers);
+  const [loadingText, setLoadingText] = useState("");
+  useEffect(() => {
+    if (isLoadingAuth) setLoadingText("Authorization...");
+    if (isLoadingTodos) setLoadingText("Loading todos...");
+    if (isLoadingUsers) setLoadingText("Loading users...");
+  }, [isLoadingAuth, isLoadingTodos, isLoadingUsers]);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -23,13 +35,12 @@ function App() {
   return (
     <div className="app">
       <Header />
+      <Spinner
+        isLoading={isLoadingAuth || isLoadingTodos || isLoadingUsers}
+        loadingText={loadingText}
+      />
 
       <Routes>
-        {/* подстановочный путь */}
-        {/* <Route path={ROUTE_PATHS.main} element={<MainPage />} />
-          <Route path={ROUTE_PATHS.login} element={<AuthPage />} />
-          <Route path={ROUTE_PATHS.profile} element={<ProfilePage />} />
-          <Route path={ROUTE_PATHS.users} element={<UsersPage />} /> */}
         <Route
           path={ROUTE_PATHS.main}
           element={

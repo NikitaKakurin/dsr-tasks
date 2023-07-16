@@ -20,7 +20,6 @@ export default function AuthPage() {
   };
   return (
     <>
-      {isLoading && <p>Loading...</p>}
       <h2 className="page-name">AuthPage</h2>
       <form className="form-auth" id="form-auth" onSubmit={handleSubmit}>
         {isError && <div className={`error-message`}>{errorMessage}</div>}

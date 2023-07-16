@@ -20,18 +20,17 @@ export default function MainPage() {
   }, [dispatch, role]);
 
   return (
-    <>
+    <div className="mainPage">
       <div className="mainPage-title_wrapper">
         <h2 className="page-name">Main page</h2>
         <button className="btn" onClick={addTodo}>
           Create
         </button>
       </div>
-      <p>{isLoading && "Loading..."}</p>
-      <div className="main-todos_container">
-        <p>{isError && message}</p>
+      <div className="mainPage-todos_container">
+        <div>{isError && message}</div>
         {!isError && data.map((todo) => <TodoCard {...todo} key={todo.id} />)}
       </div>
-    </>
+    </div>
   );
 }

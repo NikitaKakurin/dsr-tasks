@@ -1,0 +1,53 @@
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 90;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(1px);
+}
+
+.spinner-animation-enter {
+  opacity: 0;
+}
+
+.spinner-animation-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.spinner-animation-exit {
+  opacity: 1;
+}
+
+.spinner-animation-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.spinner{
+  color: #E5E7EB;
+  animation: spin 1s linear infinite;
+  height: 150px;
+  width: 150px;
+}
+
+.spinner-text{
+  text-align: center;
+  padding-top: 20px;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }    
+  to {
+    transform: rotate(360deg);
+  }
+}

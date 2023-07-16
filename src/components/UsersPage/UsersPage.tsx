@@ -1,10 +1,15 @@
 import "./UsersPage.css";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { getUsersAsync, selectUsers } from "app/slices/usersSlice";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 export default function UsersPage() {
-  const { users } = useAppSelector(selectUsers);
+  const {
+    users,
+    isLoading,
+    isError,
+    message: errorMessage,
+  } = useAppSelector(selectUsers);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getUsersAsync());
@@ -12,6 +17,7 @@ export default function UsersPage() {
   return (
     <>
       <h2 className="page-name">Users page</h2>
+      {isError && <div className={`error-message`}>{errorMessage}</div>}
       <div className="users">
         {users.map((user, index) => {
           return (
