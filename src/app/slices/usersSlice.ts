@@ -25,9 +25,6 @@ export const getUsersAsync = createAsyncThunk(
     return await api
       .get<Array<TUser>>(`users`)
       .then((response) => {
-        console.log("response: ", response);
-        console.log("response.data: ", response.data);
-
         return response.data;
       })
       .catch((_err) => {

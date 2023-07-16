@@ -13,7 +13,6 @@ export const api = axios.create({
 
 export const handleAxiosErrors = (_err: unknown) => {
   const error = _err as AxiosError;
-  debugger;
   if (error.response?.status && error.response.status === 401) {
     store.dispatch(logout());
     return {
