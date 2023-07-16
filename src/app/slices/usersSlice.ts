@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { TUser } from "models/dbTypes";
-import { AxiosError } from "axios";
-import { api } from "api/api";
+import { api, handleAxiosErrors } from "api/api";
 
 const initialState = {
   users: [] as Array<TUser>,
@@ -32,23 +31,8 @@ export const getUsersAsync = createAsyncThunk(
         return response.data;
       })
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response?.status && error.response.status >= 500) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response?.data });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );

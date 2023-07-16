@@ -15,6 +15,11 @@ export default function Header() {
         <Link to="/">Todos</Link>
       </h1>
       <nav className="navigation">
+        {role && (
+          <Link className="btn" to="/profile">
+            Profile
+          </Link>
+        )}
         {role === ROLE.admin && (
           <Link className="btn" to="/users">
             Users

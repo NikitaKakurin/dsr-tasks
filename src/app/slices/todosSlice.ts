@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState, store } from "../store";
 import { ITodo } from "models/dbTypes";
 import { AxiosError } from "axios";
-import { api } from "api/api";
+import { api, handleAxiosErrors } from "api/api";
 import { hideModal } from "./modalSlice";
 
 const initialState = {
@@ -35,23 +35,8 @@ export const getTodosAsync = createAsyncThunk(
       .get<Array<ITodo>>(`todos`)
       .then((response) => response.data)
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );
@@ -70,23 +55,8 @@ export const editTodoAsync = createAsyncThunk(
         return { id, title, description };
       })
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );
@@ -105,23 +75,8 @@ export const createTodoAsync = createAsyncThunk(
         return response.data;
       })
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );
@@ -137,23 +92,8 @@ export const deleteTodoAsync = createAsyncThunk(
         return { id };
       })
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );

@@ -1,8 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue,
+} from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { TUser, IAuthReq } from "models/dbTypes";
 import { AxiosError } from "axios";
-import { api } from "api/api";
+import { api, handleAxiosErrors } from "api/api";
 import { ROLE } from "constants/role";
 
 const initialState = {
@@ -28,29 +32,11 @@ export const getMeAsync = createAsyncThunk(
     return await api
       .get<TUser>(`me`)
       .then((response) => {
-        console.log("response: ", response);
-        console.log("response.data: ", response.data);
-
         return response.data;
       })
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response?.status && error.response.status >= 500) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response?.data });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );
@@ -61,29 +47,11 @@ export const logoutAsync = createAsyncThunk(
     return await api
       .post<TUser>(`logout`)
       .then((response) => {
-        console.log("response: ", response);
-        console.log("response.data: ", response.data);
-
         return response.data;
       })
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response?.status && error.response.status >= 500) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response?.data });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );
@@ -94,29 +62,11 @@ export const loginAsync = createAsyncThunk(
     return await api
       .post<TUser>(`login`, { login, password })
       .then((response) => {
-        console.log("response: ", response);
-        console.log("response.data: ", response.data);
-
         return response.data;
       })
       .catch((_err) => {
-        const error = _err as AxiosError;
-        if (error.response?.status && error.response.status >= 500) {
-          return rejectWithValue({
-            data: {
-              code: error.response.status,
-              message: error.message,
-            },
-          });
-        } else if (!error.response && error.request) {
-          return rejectWithValue({
-            data: {
-              code: error.code,
-              message: error.message,
-            },
-          });
-        }
-        return rejectWithValue({ data: error.response?.data });
+        const data = handleAxiosErrors(_err);
+        return rejectWithValue({ data });
       });
   }
 );
@@ -124,7 +74,12 @@ export const loginAsync = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.role = "";
+      state.name = "";
+    },
+  },
   extraReducers: (builder) => {
     builder
       // loginAsync
@@ -193,6 +148,8 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const { logout } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.authReducer;
 
