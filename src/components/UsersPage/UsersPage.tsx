@@ -14,17 +14,18 @@ export default function UsersPage() {
       <h2 className="page-name">Users page</h2>
       {isError && <div className={`error-message`}>{errorMessage}</div>}
       <div className="users">
-        {users.map((user, index) => {
-          return (
-            <div className="user-card" key={user.name}>
-              <div className="user-number">{index + 1}</div>
-              <div className="user-info">
-                <div>Name: {user.name}</div>
-                <div>Role: {user.role}</div>
+        {!isError &&
+          users.map((user, index) => {
+            return (
+              <div className="user-card" key={user.name}>
+                <div className="user-number">{index + 1}</div>
+                <div className="user-info">
+                  <div>Name: {user.name}</div>
+                  <div>Role: {user.role}</div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </>
   );
