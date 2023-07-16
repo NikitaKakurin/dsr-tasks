@@ -11,24 +11,6 @@
   backdrop-filter: blur(1px);
 }
 
-.spinner-animation-enter {
-  opacity: 0;
-}
-
-.spinner-animation-enter-active {
-  opacity: 1;
-  transition: opacity 300ms;
-}
-
-.spinner-animation-exit {
-  opacity: 1;
-}
-
-.spinner-animation-exit-active {
-  opacity: 0;
-  transition: opacity 300ms;
-}
-
 .spinner{
   color: #E5E7EB;
   animation: spin 1s linear infinite;

@@ -8,7 +8,7 @@ import {
   editTodoAsync,
 } from "app/slices/todosSlice";
 import { MODAL_TYPE } from "constants/modalType";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
 interface IProps {
@@ -17,6 +17,7 @@ interface IProps {
 }
 
 export default function Modal({ isError, errorMessage }: IProps) {
+  const modal = useRef(null);
   const { id, isShowModal, title, type, description } =
     useAppSelector(selectModal);
   const [inputTitle, setInputTitle] = useState("");
@@ -74,13 +75,14 @@ export default function Modal({ isError, errorMessage }: IProps) {
   };
   return (
     <CSSTransition
+      nodeRef={modal}
       in={isShowModal}
       timeout={300}
       mountOnEnter
       unmountOnExit
-      classNames="spinner-animation"
+      classNames="popup-animation"
     >
-      <div className="modal-container" onClick={handleCancel}>
+      <div className="modal-container" onClick={handleCancel} ref={modal}>
         <div className="modal">
           {isError && (
             <div className="error-message">

@@ -1,19 +1,22 @@
 import { CSSTransition } from "react-transition-group";
 import "./Spinner.css";
+import { useRef } from "react";
 interface IProps {
   isLoading: boolean;
   loadingText: string;
 }
 export default function Spinner({ isLoading, loadingText }: IProps) {
+  const spinner = useRef(null);
   return (
     <CSSTransition
+      nodeRef={spinner}
       in={isLoading}
       timeout={300}
       mountOnEnter
       unmountOnExit
-      classNames="spinner-animation"
+      classNames="popup-animation"
     >
-      <div className="spinner-overlay">
+      <div className="spinner-overlay" ref={spinner}>
         <div role="status">
           <svg
             aria-hidden="true"

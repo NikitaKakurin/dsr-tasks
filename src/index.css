@@ -97,3 +97,21 @@ body{
 .btn-red:hover {
   background: #ff6c03;
 }
+
+.popup-animation-enter {
+  opacity: 0;
+}
+
+.popup-animation-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.popup-animation-exit {
+  opacity: 1;
+}
+
+.popup-animation-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
