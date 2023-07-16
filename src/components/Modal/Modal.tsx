@@ -2,6 +2,7 @@ import "./Modal.css";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { hideModal, selectModal } from "app/slices/modalSlice";
 import {
+  cleanErrorTodo,
   createTodoAsync,
   deleteTodoAsync,
   editTodoAsync,
@@ -9,7 +10,12 @@ import {
 import { MODAL_TYPE } from "constants/modalType";
 import React, { useEffect, useState } from "react";
 
-export default function Modal() {
+interface IProps {
+  isError: boolean;
+  errorMessage: string;
+}
+
+export default function Modal({ isError, errorMessage }: IProps) {
   const { id, isShowModal, title, type, description } =
     useAppSelector(selectModal);
   const [inputTitle, setInputTitle] = useState("");
@@ -34,35 +40,51 @@ export default function Modal() {
 
   const dispatch = useAppDispatch();
   const send = () => {
-    if (type === MODAL_TYPE.delete) {
-      dispatch(deleteTodoAsync(id));
-    }
-    if (type === MODAL_TYPE.edit) {
-      dispatch(
-        editTodoAsync({ id, description: inputDescription, title: inputTitle })
-      );
-    }
-    if (type === MODAL_TYPE.create) {
-      dispatch(
-        createTodoAsync({
-          description: inputDescription,
-          title: inputTitle,
-        })
-      );
+    switch (type) {
+      case MODAL_TYPE.delete:
+        dispatch(deleteTodoAsync(id));
+        break;
+      case MODAL_TYPE.edit:
+        dispatch(
+          editTodoAsync({
+            id,
+            description: inputDescription,
+            title: inputTitle,
+          })
+        );
+        break;
+      case MODAL_TYPE.create:
+        dispatch(
+          createTodoAsync({
+            description: inputDescription,
+            title: inputTitle,
+          })
+        );
+        break;
     }
   };
-  const handleCancel = () => {
-    dispatch(hideModal());
+  const handleCancel = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>
+  ) => {
+    if (e.target === e.currentTarget) {
+      dispatch(hideModal());
+      dispatch(cleanErrorTodo());
+    }
   };
   return (
     <>
       {isShowModal && (
-        <div className="modal-container">
+        <div className="modal-container" onClick={handleCancel}>
           <div className="modal">
-            <h3 className="moda__action_title">{modalTitle}</h3>
+            {isError && (
+              <div className="error-message">
+                {errorMessage}, please try again
+              </div>
+            )}
+            <h3 className="modal__action_title">{modalTitle}</h3>
             {(type === MODAL_TYPE.edit || type === MODAL_TYPE.create) && (
               <>
-                <label htmlFor="modal__title">Title</label>
+                <label htmlFor="modal__title">Title:</label>
                 <input
                   id="modal__title"
                   value={inputTitle}
@@ -71,6 +93,7 @@ export default function Modal() {
                   }
                   maxLength={25}
                 ></input>
+
                 <label htmlFor="modal__description">Description:</label>
                 <textarea
                   id="modal__description"

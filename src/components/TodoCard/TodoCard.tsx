@@ -7,6 +7,7 @@ import { showModal } from "app/slices/modalSlice";
 
 export default function TodoCard({ title, description, id, createdBy }: ITodo) {
   const { role, name } = useAppSelector(selectAuth);
+
   const dispatch = useAppDispatch();
   const isAllowed = () => role === ROLE.admin || name === createdBy;
   const editTodo = () => {

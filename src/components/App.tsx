@@ -17,9 +17,14 @@ import { selectUsers } from "app/slices/usersSlice";
 
 function App() {
   const { role, isLoading: isLoadingAuth } = useAppSelector(selectAuth);
-  const { isLoading: isLoadingTodos } = useAppSelector(selectTodos);
+  const {
+    isLoading: isLoadingTodos,
+    isError: isErrorTodos,
+    message: errorMessageTodos,
+  } = useAppSelector(selectTodos);
   const { isLoading: isLoadingUsers } = useAppSelector(selectUsers);
   const [loadingText, setLoadingText] = useState("");
+
   useEffect(() => {
     if (isLoadingAuth) setLoadingText("Authorization...");
     if (isLoadingTodos) setLoadingText("Loading todos...");
@@ -74,7 +79,7 @@ function App() {
           }
         />
       </Routes>
-      <Modal />
+      <Modal isError={isErrorTodos} errorMessage={errorMessageTodos} />
     </div>
   );
 }

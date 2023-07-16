@@ -161,7 +161,12 @@ export const deleteTodoAsync = createAsyncThunk(
 export const todosSlice = createSlice({
   name: "todos",
   initialState,
-  reducers: {},
+  reducers: {
+    cleanErrorTodo: (state) => {
+      state.isError = false;
+      state.message = "";
+    },
+  },
   extraReducers: (builder) => {
     builder
       // getTodosAsync
@@ -211,7 +216,6 @@ export const todosSlice = createSlice({
         state.isError = false;
       })
       .addCase(createTodoAsync.fulfilled, (state, action) => {
-        const { id, description, title, createdBy } = action.payload;
         state.isLoading = false;
         state.isError = false;
         state.data.push(action.payload);
@@ -244,6 +248,8 @@ export const todosSlice = createSlice({
       });
   },
 });
+
+export const { cleanErrorTodo } = todosSlice.actions;
 
 export const selectTodos = (state: RootState) => state.todosReducer;
 

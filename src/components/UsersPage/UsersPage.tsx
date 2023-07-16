@@ -4,12 +4,7 @@ import { getUsersAsync, selectUsers } from "app/slices/usersSlice";
 import { useEffect } from "react";
 
 export default function UsersPage() {
-  const {
-    users,
-    isLoading,
-    isError,
-    message: errorMessage,
-  } = useAppSelector(selectUsers);
+  const { users, isError, message: errorMessage } = useAppSelector(selectUsers);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getUsersAsync());
