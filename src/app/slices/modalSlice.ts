@@ -26,11 +26,7 @@ export const modalSlice = createSlice({
       state.id = payload.id;
     },
     hideModal: (state) => {
-      state.description = "";
-      state.title = "";
-      state.type = "";
       state.isShowModal = false;
-      state.id = 0;
     },
   },
 });

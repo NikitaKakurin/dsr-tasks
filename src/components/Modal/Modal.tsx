@@ -9,6 +9,7 @@ import {
 } from "app/slices/todosSlice";
 import { MODAL_TYPE } from "constants/modalType";
 import React, { useEffect, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 
 interface IProps {
   isError: boolean;
@@ -72,51 +73,55 @@ export default function Modal({ isError, errorMessage }: IProps) {
     }
   };
   return (
-    <>
-      {isShowModal && (
-        <div className="modal-container" onClick={handleCancel}>
-          <div className="modal">
-            {isError && (
-              <div className="error-message">
-                {errorMessage}, please try again
-              </div>
-            )}
-            <h3 className="modal__action_title">{modalTitle}</h3>
-            {(type === MODAL_TYPE.edit || type === MODAL_TYPE.create) && (
-              <>
-                <label htmlFor="modal__title">Title:</label>
-                <input
-                  id="modal__title"
-                  value={inputTitle}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setInputTitle(e.target.value)
-                  }
-                  maxLength={25}
-                ></input>
-
-                <label htmlFor="modal__description">Description:</label>
-                <textarea
-                  id="modal__description"
-                  value={inputDescription}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setInputDescription(e.target.value)
-                  }
-                  rows={5}
-                  maxLength={100}
-                ></textarea>
-              </>
-            )}
-            <div className="modal__container-btn">
-              <button className="btn btn-apply btn-green" onClick={send}>
-                Apply
-              </button>
-              <button className="btn btn-cancel btn-red" onClick={handleCancel}>
-                Cancel
-              </button>
+    <CSSTransition
+      in={isShowModal}
+      timeout={300}
+      mountOnEnter
+      unmountOnExit
+      classNames="spinner-animation"
+    >
+      <div className="modal-container" onClick={handleCancel}>
+        <div className="modal">
+          {isError && (
+            <div className="error-message">
+              {errorMessage}, please try again
             </div>
+          )}
+          <h3 className="modal__action_title">{modalTitle}</h3>
+          {(type === MODAL_TYPE.edit || type === MODAL_TYPE.create) && (
+            <>
+              <label htmlFor="modal__title">Title:</label>
+              <input
+                id="modal__title"
+                value={inputTitle}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setInputTitle(e.target.value)
+                }
+                maxLength={25}
+              ></input>
+
+              <label htmlFor="modal__description">Description:</label>
+              <textarea
+                id="modal__description"
+                value={inputDescription}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setInputDescription(e.target.value)
+                }
+                rows={5}
+                maxLength={100}
+              ></textarea>
+            </>
+          )}
+          <div className="modal__container-btn">
+            <button className="btn btn-apply btn-green" onClick={send}>
+              Apply
+            </button>
+            <button className="btn btn-cancel btn-red" onClick={handleCancel}>
+              Cancel
+            </button>
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </CSSTransition>
   );
 }

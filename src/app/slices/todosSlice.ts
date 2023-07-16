@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState, store } from "../store";
 import { ITodo } from "models/dbTypes";
-import { AxiosError } from "axios";
 import { api, handleAxiosErrors } from "api/api";
 import { hideModal } from "./modalSlice";
 
