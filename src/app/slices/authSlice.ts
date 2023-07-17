@@ -16,6 +16,7 @@ const initialState = {
   message: "",
   isError: false,
   isLoading: false,
+  loadingText: "",
 };
 
 export type TAuthState = typeof initialState;
@@ -86,6 +87,7 @@ export const authSlice = createSlice({
       .addCase(loginAsync.pending, (state) => {
         state.isError = false;
         state.isLoading = true;
+        state.loadingText = "Authorization...";
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         const payload = action.payload;
@@ -95,6 +97,7 @@ export const authSlice = createSlice({
         state.message = "";
         state.isError = false;
         state.isLoading = false;
+        state.loadingText = "";
       })
       .addCase(loginAsync.rejected, (state, action) => {
         const payload = (action.payload as ILoginErrorPayload).data;
@@ -104,11 +107,13 @@ export const authSlice = createSlice({
         state.message = payload.message;
         state.isError = true;
         state.isLoading = false;
+        state.loadingText = "";
       })
       // logoutAsync
       .addCase(logoutAsync.pending, (state) => {
         state.isError = false;
         state.isLoading = true;
+        state.loadingText = "Logout...";
       })
       .addCase(logoutAsync.fulfilled, (state) => {
         state.role = "";
@@ -117,6 +122,7 @@ export const authSlice = createSlice({
         state.message = "";
         state.isError = false;
         state.isLoading = false;
+        state.loadingText = "";
       })
       .addCase(logoutAsync.rejected, (state, action) => {
         const payload = (action.payload as ILoginErrorPayload).data;
@@ -124,11 +130,13 @@ export const authSlice = createSlice({
         state.message = payload.message;
         state.isError = true;
         state.isLoading = false;
+        state.loadingText = "";
       })
       // getMeAsync
       .addCase(getMeAsync.pending, (state) => {
         state.isError = false;
         state.isLoading = true;
+        state.loadingText = "Geting user data...";
       })
       .addCase(getMeAsync.fulfilled, (state, action) => {
         const payload = action.payload;
@@ -138,6 +146,7 @@ export const authSlice = createSlice({
         state.message = "";
         state.isError = false;
         state.isLoading = false;
+        state.loadingText = "";
       })
       .addCase(getMeAsync.rejected, (state, action) => {
         const payload = (action.payload as ILoginErrorPayload).data;
@@ -145,6 +154,7 @@ export const authSlice = createSlice({
         state.message = payload.message;
         state.isError = true;
         state.isLoading = false;
+        state.loadingText = "";
       });
   },
 });

@@ -17,7 +17,7 @@ export default function Spinner({ isLoading, loadingText }: IProps) {
       classNames="popup-animation"
     >
       <div className="spinner-overlay" ref={spinner}>
-        <div role="status">
+        <div role="status" className="spinner-status">
           <svg
             aria-hidden="true"
             className="spinner"
@@ -34,7 +34,7 @@ export default function Spinner({ isLoading, loadingText }: IProps) {
               fill="#f1f1f1"
             />
           </svg>
-          <div className="spinner-text">{loadingText || "Loading"}</div>
+          <div className="spinner-text">{loadingText || "Loading..."}</div>
         </div>
       </div>
     </CSSTransition>

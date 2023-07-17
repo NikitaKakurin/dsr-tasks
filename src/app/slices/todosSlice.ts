@@ -10,6 +10,7 @@ const initialState = {
   data: [] as Array<ITodo>,
   code: 200 as number | string,
   message: "",
+  loadingText: "",
 };
 
 type IEditTodoAsyncProps = Pick<ITodo, "id" | "title" | "description">;
@@ -112,11 +113,13 @@ export const todosSlice = createSlice({
       .addCase(getTodosAsync.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
+        state.loadingText = "Getting Todos...";
       })
       .addCase(getTodosAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.data = action.payload;
+        state.loadingText = "";
       })
       .addCase(getTodosAsync.rejected, (state, action) => {
         const payload = (action.payload as ILoginErrorPayload).data;
@@ -124,17 +127,20 @@ export const todosSlice = createSlice({
         state.isError = true;
         state.code = payload.code;
         state.message = payload.message;
+        state.loadingText = "";
       })
 
       // editTodoAsync
       .addCase(editTodoAsync.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
+        state.loadingText = "Saving Todo...";
       })
       .addCase(editTodoAsync.fulfilled, (state, action) => {
         const { id, description, title } = action.payload;
         state.isLoading = false;
         state.isError = false;
+        state.loadingText = "";
         const todo = state.data.find((todo) => todo.id === id);
         if (todo) {
           todo.description = description;
@@ -147,16 +153,19 @@ export const todosSlice = createSlice({
         state.isError = true;
         state.code = payload.code;
         state.message = payload.message;
+        state.loadingText = "";
       })
 
       // createTodoAsync
       .addCase(createTodoAsync.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
+        state.loadingText = "Creating Todo...";
       })
       .addCase(createTodoAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
+        state.loadingText = "";
         state.data.push(action.payload);
       })
       .addCase(createTodoAsync.rejected, (state, action) => {
@@ -165,17 +174,20 @@ export const todosSlice = createSlice({
         state.isError = true;
         state.code = payload.code;
         state.message = payload.message;
+        state.loadingText = "";
       })
 
       // deleteTodoAsync
       .addCase(deleteTodoAsync.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
+        state.loadingText = "Deleting Todo...";
       })
       .addCase(deleteTodoAsync.fulfilled, (state, action) => {
         const { id } = action.payload;
         state.isLoading = false;
         state.isError = false;
+        state.loadingText = "";
         state.data = state.data.filter((todo) => todo.id !== id);
       })
       .addCase(deleteTodoAsync.rejected, (state, action) => {
@@ -184,6 +196,7 @@ export const todosSlice = createSlice({
         state.isError = true;
         state.code = payload.code;
         state.message = payload.message;
+        state.loadingText = "";
       });
   },
 });

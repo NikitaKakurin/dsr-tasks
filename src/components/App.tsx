@@ -17,20 +17,33 @@ import { selectUsers } from "app/slices/usersSlice";
 import Page404 from "./Page404/Page404";
 
 function App() {
-  const { role, isLoading: isLoadingAuth } = useAppSelector(selectAuth);
+  const {
+    role,
+    isLoading: isLoadingAuth,
+    loadingText: loadingTextAuth,
+  } = useAppSelector(selectAuth);
   const {
     isLoading: isLoadingTodos,
     isError: isErrorTodos,
     message: errorMessageTodos,
+    loadingText: loadingTextError,
   } = useAppSelector(selectTodos);
-  const { isLoading: isLoadingUsers } = useAppSelector(selectUsers);
+  const { isLoading: isLoadingUsers, loadingText: loadingTextUser } =
+    useAppSelector(selectUsers);
   const [loadingText, setLoadingText] = useState("");
 
   useEffect(() => {
-    if (isLoadingAuth) setLoadingText("Authorization...");
-    if (isLoadingTodos) setLoadingText("Loading todos...");
-    if (isLoadingUsers) setLoadingText("Loading users...");
-  }, [isLoadingAuth, isLoadingTodos, isLoadingUsers]);
+    if (isLoadingAuth) setLoadingText(loadingTextAuth);
+    if (isLoadingTodos) setLoadingText(loadingTextError);
+    if (isLoadingUsers) setLoadingText(loadingTextUser);
+  }, [
+    isLoadingAuth,
+    isLoadingTodos,
+    isLoadingUsers,
+    loadingTextAuth,
+    loadingTextError,
+    loadingTextUser,
+  ]);
 
   const dispatch = useAppDispatch();
 

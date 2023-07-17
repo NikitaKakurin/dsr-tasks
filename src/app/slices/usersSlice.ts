@@ -9,6 +9,7 @@ const initialState = {
   message: "",
   isError: false,
   isLoading: false,
+  loadingText: "",
 };
 
 export type TUsersState = typeof initialState;
@@ -44,6 +45,7 @@ export const usersSlice = createSlice({
       .addCase(getUsersAsync.pending, (state) => {
         state.isError = false;
         state.isLoading = true;
+        state.loadingText = "Getting Users data...";
       })
       .addCase(getUsersAsync.fulfilled, (state, action) => {
         const payload = action.payload;
